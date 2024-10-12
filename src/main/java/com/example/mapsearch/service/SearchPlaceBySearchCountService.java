@@ -13,10 +13,10 @@ import java.util.Set;
 @Service
 public class SearchPlaceBySearchCountService {
 
-    private final RedisTemplate<String, String> redisTemplate;
-    private ZSetOperations<String, String> zSetOperations;
+    private final RedisTemplate<String, Object> redisTemplate;
+    private ZSetOperations<String, Object> zSetOperations;
 //    private final PlaceRedisRepository placeRedisRepository;
-    private final PlaceRedisService placeRedisRepository;
+    private final PlaceRedisService placeRedisSerivce;
 
     private final int START = 0;
     private final int END = 9;
@@ -24,18 +24,18 @@ public class SearchPlaceBySearchCountService {
 
 
     @Autowired
-    public SearchPlaceBySearchCountService(RedisTemplate<String, String> redisTemplate, PlaceRedisService placeRedisRepository) {
+    public SearchPlaceBySearchCountService(RedisTemplate<String, Object> redisTemplate, PlaceRedisService placeRedisSerivce) {
         this.redisTemplate = redisTemplate;
         this.zSetOperations = redisTemplate.opsForZSet();
-        this.placeRedisRepository = placeRedisRepository;
+        this.placeRedisSerivce = placeRedisSerivce;
     }
 
     public List<PlaceEntity> getPlaceRanking() {
         List<PlaceEntity> result = new ArrayList<>();
-        Set<ZSetOperations.TypedTuple<String>> placeIdAndSearchCount = zSetOperations.reverseRangeWithScores(PLACE_SEARCH_COUNT, START, END);
-        for (ZSetOperations.TypedTuple<String> stringTypedTuple : placeIdAndSearchCount) {
-            String placeId = stringTypedTuple.getValue();
-            PlaceEntity place = placeRedisRepository.findById(placeId);
+        Set<ZSetOperations.TypedTuple<Object>> placeIdAndSearchCount = zSetOperations.reverseRangeWithScores(PLACE_SEARCH_COUNT, START, END);
+        for (ZSetOperations.TypedTuple<Object> stringTypedTuple : placeIdAndSearchCount) {
+            String placeId = stringTypedTuple.getValue().toString();
+            PlaceEntity place = placeRedisSerivce.findById(placeId);
             result.add(place);
         }
         return result;

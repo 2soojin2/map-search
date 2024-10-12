@@ -4,11 +4,12 @@ import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
 @RedisHash(value = "places")
-public class PlaceEntity {
+public class PlaceEntity implements Serializable {
 
     @Id
     private String id;

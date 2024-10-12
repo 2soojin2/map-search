@@ -64,5 +64,6 @@ class SearchPlaceBySearchCountServiceTest {
         List<PlaceEntity> placeSearchCount = service.getPlaceRanking();
         Assertions.assertEquals(10, placeSearchCount.size());
         Assertions.assertEquals(11, placeSearchCount.get(0).getSearchCount());
+        Assertions.assertEquals("L곱창", placeSearchCount.get(0).getTitle());
     }
 }
