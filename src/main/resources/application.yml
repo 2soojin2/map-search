@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: map-search
+  config:
+    import: optional:file:.env[.properties]
+  data:
+    redis:
+      host: localhost
+      port: 6379
+kakao:
+  secret:
+    key: ${KAKAO_SECRET_KEY}
+naver:
+  clinet:
+    id: ${NAVER_CLIENT_ID}
+    SECRET: ${NAVER_CLIENT_SECRET}
+
