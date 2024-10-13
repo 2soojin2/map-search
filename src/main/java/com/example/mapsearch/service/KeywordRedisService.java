@@ -24,7 +24,7 @@ public class KeywordRedisService {
         return keywordEntity;
     }
 
-    public KeywordEntity saveOrUpdateKeyword(KeywordEntity keywordEntity) {
+    public void saveOrUpdateKeyword(KeywordEntity keywordEntity) {
         KeywordEntity existingKeyword = this.findByTitle(keywordEntity);
         KeywordEntity savedKeyword = new KeywordEntity();
         if (ObjectUtils.isEmpty(existingKeyword)) {
@@ -36,7 +36,6 @@ public class KeywordRedisService {
             savedKeyword = existingKeyword;
         }
         this.saveKeyword(savedKeyword);
-        return savedKeyword;
     }
 
     public KeywordEntity findByTitle(KeywordEntity keywordEntity) {
