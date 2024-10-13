@@ -1,10 +1,10 @@
 package com.example.mapsearch.service;
 
 import com.example.mapsearch.constant.Constant;
-import com.example.mapsearch.dto.PlaceRankResDTO;
+import com.example.mapsearch.dto.KeywordRankResDTO;
+import com.example.mapsearch.entity.KeywordEntity;
 import com.example.mapsearch.entity.PlaceEntity;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,12 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class SearchPlaceBySearchCountService {
+public class SearchPlaceRankingService {
 
     private final RedisTemplate<String, Object> redisTemplate;
     private ZSetOperations<String, Object> zSetOperations;
     private final PlaceRedisService placeRedisSerivce;
+    private final KeywordRedisService keywordRedisService;
 
     private final int START = 0;
     private final int END = 9;
@@ -35,8 +36,15 @@ public class SearchPlaceBySearchCountService {
         return result;
     }
 
-    public List<PlaceRankResDTO> getKeywordRanking(){
-        List<PlaceRankResDTO> result = new ArrayList<>();
+    public List<KeywordRankResDTO> getKeywordRanking() {
+        List<KeywordRankResDTO> result = new ArrayList<>();
+        Set<ZSetOperations.TypedTuple<Object>> keywordTuples = zSetOperations.reverseRangeWithScores(Constant.KEYWORD_SEARCH_COUNT, START, END);
+        for (ZSetOperations.TypedTuple<Object> stringTypedTuple : keywordTuples) {
+            String keywordId = stringTypedTuple.getValue().toString();
+            KeywordEntity keyword = keywordRedisService.findById(keywordId);
+            KeywordRankResDTO keywordRankResDTO = new KeywordRankResDTO(keyword.getTitle(), keyword.getSearchCount());
+            result.add(keywordRankResDTO);
+        }
         return result;
     }
 }

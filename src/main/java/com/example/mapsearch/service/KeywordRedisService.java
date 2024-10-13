@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
-public class KeyWordRedisService {
+public class KeywordRedisService {
 
     private final RedisTemplate<String, Object> redisTemplate;
     private ZSetOperations<String, Object> zSetOperations;

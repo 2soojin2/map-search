@@ -1,7 +1,6 @@
 package com.example.mapsearch.service;
 
 import com.example.mapsearch.entity.KeywordEntity;
-import com.example.mapsearch.entity.PlaceEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class KeyWordRedisServiceTest {
     @Autowired
-    private KeyWordRedisService keyWordRedisService;
+    private KeywordRedisService keyWordRedisService;
     @Autowired
     private StringRedisTemplate redisTemplate;
     @BeforeEach
@@ -46,6 +43,15 @@ class KeyWordRedisServiceTest {
         Assertions.assertEquals(1, byTitle.getSearchCount());
         Double placeSearchCount2 = keyWordRedisService.getKeyWordSearchCount(byTitle2.getId());
         Assertions.assertEquals(1, placeSearchCount2);
+    }
+
+    @Test
+    void 키워드로_객체_찾기(){
+        String q = "곱창";
+        KeywordEntity keyword = new KeywordEntity(q);
+        KeywordEntity keywordEntity = keyWordRedisService.saveOrUpdateKeyword(keyword);
+        KeywordEntity byTitle = keyWordRedisService.findByTitle(keyword);
+        Assertions.assertEquals(keywordEntity.getId(), byTitle.getId());
     }
 
 }

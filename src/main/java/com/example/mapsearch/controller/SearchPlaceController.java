@@ -1,9 +1,9 @@
 package com.example.mapsearch.controller;
 
+import com.example.mapsearch.dto.KeywordRankResDTO;
 import com.example.mapsearch.dto.SerchPlaceResDTO;
-import com.example.mapsearch.entity.PlaceEntity;
 import com.example.mapsearch.service.SearchPlaceByKeywordService;
-import com.example.mapsearch.service.SearchPlaceBySearchCountService;
+import com.example.mapsearch.service.SearchPlaceRankingService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ import java.util.List;
 public class SearchPlaceController {
 
     private final SearchPlaceByKeywordService searchPlaceByKeywordService;
-    private final SearchPlaceBySearchCountService searchPlaceBySearchCountService;
+    private final SearchPlaceRankingService searchPlaceBySearchCountService;
 
     @GetMapping(value = "/place")
     public SerchPlaceResDTO searchPlaceByKeyword(@RequestParam String param){
@@ -26,7 +26,7 @@ public class SearchPlaceController {
     }
 
     @GetMapping(value = "/ranking")
-    public List<PlaceEntity> searchPlace(){
-        return searchPlaceBySearchCountService.getPlaceRanking();
+    public List<KeywordRankResDTO> searchKeywordRanking(){
+        return searchPlaceBySearchCountService.getKeywordRanking();
     }
 }

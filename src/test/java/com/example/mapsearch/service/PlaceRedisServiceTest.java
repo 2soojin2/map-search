@@ -13,7 +13,7 @@ class PlaceRedisServiceTest {
     @Autowired
     PlaceRedisService placeRedisService;
     @Autowired
-    SearchPlaceBySearchCountService searchPlaceBySearchCountService;
+    SearchPlaceRankingService searchPlaceBySearchCountService;
     @Autowired
     private StringRedisTemplate redisTemplate;
 

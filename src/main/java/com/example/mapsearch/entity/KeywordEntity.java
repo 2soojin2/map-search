@@ -26,6 +26,13 @@ public class KeywordEntity implements Serializable {
         this.searchCount = 0;
     }
 
+    public KeywordEntity(String title, int searchCount) {
+        this.id = UUID.randomUUID().toString();
+        this.title = title;
+        this.searchCount = searchCount;
+    }
+
+
     public void plusOneSearchCount(){
         this.searchCount += 1;
     }
