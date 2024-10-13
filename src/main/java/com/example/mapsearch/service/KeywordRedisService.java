@@ -43,7 +43,7 @@ public class KeywordRedisService {
         Map<String, KeywordEntity> keywordEntities = keywordHashOperations.entries(Constant.REDIS_HASH_KEY_KEWORDS);
         for (KeywordEntity keyword : keywordEntities.values()) {
             if (keyword.equals(keywordEntity)) {
-                return keywordEntity;
+                return keyword;
             }
         }
         return null;

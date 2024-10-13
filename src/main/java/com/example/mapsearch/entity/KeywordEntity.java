@@ -23,7 +23,7 @@ public class KeywordEntity implements Serializable {
     public KeywordEntity(String title) {
         this.id = UUID.randomUUID().toString();
         this.title = title;
-        this.searchCount = 0;
+        this.searchCount = 1;
     }
 
     public KeywordEntity(String title, int searchCount) {
@@ -39,14 +39,14 @@ public class KeywordEntity implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof KeywordEntity)) return false;
-        KeywordEntity that = (KeywordEntity) o;
-        return Objects.equals(title, that.title);
+        if (this == o) return true; // 동일 객체 체크
+        if (!(o instanceof KeywordEntity)) return false; // 타입 체크
+        KeywordEntity that = (KeywordEntity) o; // 타입 변환
+        return title != null && title.equals(that.title); // title 문자열 비교
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title);
+        return title != null ? title.hashCode() : 0; // title을 해시코드로 사용
     }
 }
