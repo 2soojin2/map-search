@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class PlaceRankResDTO {
-    private String title;
+    private String keyword;
     private String searchCount;
 }

@@ -1,6 +1,7 @@
 package com.example.mapsearch.service;
 
 import com.example.mapsearch.constant.Constant;
+import com.example.mapsearch.dto.PlaceRankResDTO;
 import com.example.mapsearch.entity.PlaceEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,11 @@ public class SearchPlaceBySearchCountService {
             PlaceEntity place = placeRedisSerivce.findById(placeId);
             result.add(place);
         }
+        return result;
+    }
+
+    public List<PlaceRankResDTO> getKeywordRanking(){
+        List<PlaceRankResDTO> result = new ArrayList<>();
         return result;
     }
 }

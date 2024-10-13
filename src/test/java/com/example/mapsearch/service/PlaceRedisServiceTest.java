@@ -52,7 +52,7 @@ class PlaceRedisServiceTest {
     @Test
     void 좌표값이_같으면_장소_엔티티_반환(){
         PlaceEntity place1 = new PlaceEntity("ABC곱창", "127456", "165123", 0);
-        PlaceEntity savePlace1 = placeRedisService.save(place1);
+        PlaceEntity savePlace1 = placeRedisService.savePlace(place1);
         PlaceEntity place2 = new PlaceEntity("ABCD곱창", "127456", "165123", 1);
 
         PlaceEntity byCoordinates = placeRedisService.findByCoordinates(place2);

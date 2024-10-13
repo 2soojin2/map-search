@@ -1,5 +1,6 @@
 package com.example.mapsearch.config;
 
+import com.example.mapsearch.entity.KeywordEntity;
 import com.example.mapsearch.entity.PlaceEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +42,12 @@ public class RedisConfig {
     }
 
     @Bean
-    public HashOperations<String, String, PlaceEntity> hashOperations(RedisTemplate<String, Object> objectRedisTemplate) {
+    public HashOperations<String, String, PlaceEntity> placeHashOperations(RedisTemplate<String, Object> objectRedisTemplate) {
+        return objectRedisTemplate.opsForHash();
+    }
+
+    @Bean
+    public HashOperations<String, String, KeywordEntity> keywordHashOperations(RedisTemplate<String, Object> objectRedisTemplate) {
         return objectRedisTemplate.opsForHash();
     }
 

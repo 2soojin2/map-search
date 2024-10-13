@@ -53,7 +53,7 @@ class SearchPlaceBySearchCountServiceTest {
 
     private void makePlace(String title, int searchCount) {
         PlaceEntity place1 = new PlaceEntity(title, "127", "165", searchCount);
-        PlaceEntity savedPlace = repository.save(place1);
+        PlaceEntity savedPlace = repository.savePlace(place1);
         repository.savePlaceSearchCount(savedPlace.getId(), searchCount);
     }
 

@@ -1,9 +1,9 @@
 package com.example.mapsearch.service;
 
 import com.example.mapsearch.constant.Constant;
+import com.example.mapsearch.entity.KeywordEntity;
 import com.example.mapsearch.entity.PlaceEntity;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -22,9 +22,8 @@ public class PlaceRedisService {
 
 
 
-
-    public PlaceEntity save(PlaceEntity placeEntity) {
-        hashOperations.put(Constant.REDIS_HASH_KEY, placeEntity.getId(), placeEntity);
+    public PlaceEntity savePlace(PlaceEntity placeEntity) {
+        hashOperations.put(Constant.REDIS_HASH_KEY_PLACES, placeEntity.getId(), placeEntity);
         return placeEntity;
     }
 
@@ -34,19 +33,19 @@ public class PlaceRedisService {
         if (ObjectUtils.isEmpty(existingPlace)) {
             this.savePlaceSearchCount(newPlace.getId(), newPlace.getSearchCount());
             savedPlace = newPlace;
-            this.save(newPlace);
+            this.savePlace(newPlace);
         } else {
             existingPlace.plusOneSearchCount();
             this.incrementPlaceSearchCount(existingPlace.getId());
             savedPlace = existingPlace;
-            this.save(existingPlace);
+            this.savePlace(existingPlace);
         }
         return savedPlace;
     }
 
     public PlaceEntity findByCoordinates(PlaceEntity place) {
         Map<String, PlaceEntity> allPlaces =
-                hashOperations.entries(Constant.REDIS_HASH_KEY);
+                hashOperations.entries(Constant.REDIS_HASH_KEY_PLACES);
 
         for (PlaceEntity findplace : allPlaces.values()) {
             if (findplace.equals(place)) {
@@ -57,7 +56,7 @@ public class PlaceRedisService {
     }
 
     public PlaceEntity findById(String placeId) {
-        return hashOperations.get(Constant.REDIS_HASH_KEY, placeId);
+        return hashOperations.get(Constant.REDIS_HASH_KEY_PLACES, placeId);
     }
 
     public void savePlaceSearchCount(String placeId, double searchCount) {
