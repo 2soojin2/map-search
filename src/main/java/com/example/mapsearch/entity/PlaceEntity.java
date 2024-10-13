@@ -24,6 +24,14 @@ public class PlaceEntity implements Serializable {
     private String y;
     private int searchCount;
 
+    public PlaceEntity(String title, String x, String y) {
+        this.id = UUID.randomUUID().toString();
+        this.title = title;
+        this.x = x;
+        this.y = y;
+        this.searchCount = 0;
+    }
+
     public PlaceEntity(String title, String x, String y, int searchCount) {
         this.id = UUID.randomUUID().toString();
         this.title = title;

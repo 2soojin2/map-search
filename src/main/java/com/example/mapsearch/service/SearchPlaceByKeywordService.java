@@ -3,6 +3,7 @@ package com.example.mapsearch.service;
 import com.example.mapsearch.dto.Place;
 import com.example.mapsearch.dto.PlaceResDTO;
 import com.example.mapsearch.dto.SerchPlaceResDTO;
+import com.example.mapsearch.entity.PlaceEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class SearchPlaceByKeywordService {
 
     private final KaKaoApiServiceImpl kaKaoApiService;
     private final NaverApiServiceImpl naverApiService;
+    private final PlaceRedisService placeRedisService;
 
     public SerchPlaceResDTO searchPlaceByKeyword(String query) {
         SerchPlaceResDTO result = new SerchPlaceResDTO();
@@ -24,11 +26,14 @@ public class SearchPlaceByKeywordService {
         List<Place> kakaoPlaces = kaKaoApiService.callPlaceInfoApi(query);
         List<Place> naverPlaces = naverApiService.callPlaceInfoApi(query);
 
-        List<PlaceResDTO> sortedPlaces = this.mergeAndSortPlaces(kakaoPlaces, naverPlaces)
-                .stream().map(place -> new PlaceResDTO(place.getTitle()))
-                .collect(Collectors.toList());
+        List<Place> sortedPlaces = this.mergeAndSortPlaces(kakaoPlaces, naverPlaces);
 
-        result.setPlaces(sortedPlaces);
+        for (Place place : sortedPlaces) {
+            PlaceEntity placeEntity = new PlaceEntity(place.getTitle(), place.getX(), place.getY());
+            placeRedisService.saveOrUpdatePlace(placeEntity);
+        }
+        result.setPlaces(sortedPlaces.stream().map(place -> new PlaceResDTO(place.getTitle()))
+                .collect(Collectors.toList()));
         return result;
     }
 
