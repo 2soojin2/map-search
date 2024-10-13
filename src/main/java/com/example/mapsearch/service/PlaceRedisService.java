@@ -1,29 +1,74 @@
 package com.example.mapsearch.service;
 
+import com.example.mapsearch.constant.Constant;
 import com.example.mapsearch.entity.PlaceEntity;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class PlaceRedisService {
-    @Autowired
-    private final RedisTemplate<String, Object> objectRedisTemplate;
+
+    private final RedisTemplate<String, Object> redisTemplate;
+    private ZSetOperations<String, Object> zSetOperations;
     private final HashOperations<String, String, PlaceEntity> hashOperations;
-    @Autowired
-    public PlaceRedisService(RedisTemplate<String, Object> redisTemplate) {
-        this.objectRedisTemplate = redisTemplate;
-        this.hashOperations = redisTemplate.opsForHash();
-    }
+
+
+
+
     public PlaceEntity save(PlaceEntity placeEntity) {
-        String key = "places";  // 해시의 키
-        hashOperations.put(key, placeEntity.getId(), placeEntity);
+        hashOperations.put(Constant.REDIS_HASH_KEY, placeEntity.getId(), placeEntity);
         return placeEntity;
     }
 
+    public PlaceEntity saveOrUpdatePlace(PlaceEntity newPlace) {
+        PlaceEntity existingPlace = this.findByCoordinates(newPlace);
+        PlaceEntity savedPlace = new PlaceEntity();
+        if (ObjectUtils.isEmpty(existingPlace)) {
+            this.savePlaceSearchCount(newPlace.getId(), newPlace.getSearchCount());
+            savedPlace = newPlace;
+            this.save(newPlace);
+        } else {
+            existingPlace.plusOneSearchCount();
+            this.incrementPlaceSearchCount(existingPlace.getId());
+            savedPlace = existingPlace;
+            this.save(existingPlace);
+        }
+        return savedPlace;
+    }
+
+    public PlaceEntity findByCoordinates(PlaceEntity place) {
+        Map<String, PlaceEntity> allPlaces =
+                hashOperations.entries(Constant.REDIS_HASH_KEY);
+
+        for (PlaceEntity findplace : allPlaces.values()) {
+            if (findplace.equals(place)) {
+                return findplace;
+            }
+        }
+        return null;
+    }
+
     public PlaceEntity findById(String placeId) {
-        String key = "places";  // 해시의 키
-        return hashOperations.get(key, placeId);
+        return hashOperations.get(Constant.REDIS_HASH_KEY, placeId);
+    }
+
+    public void savePlaceSearchCount(String placeId, double searchCount) {
+        zSetOperations.add(Constant.PLACE_SEARCH_COUNT, placeId, searchCount);
+    }
+
+    public void incrementPlaceSearchCount(String placeId) {
+        zSetOperations.incrementScore(Constant.PLACE_SEARCH_COUNT, placeId, 1.0);
+    }
+
+    public Double getPlaceSearchCount(String placeId) {
+        return zSetOperations.score(Constant.PLACE_SEARCH_COUNT, placeId);
     }
 }

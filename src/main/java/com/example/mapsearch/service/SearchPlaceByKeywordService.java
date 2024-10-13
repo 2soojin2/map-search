@@ -21,7 +21,6 @@ public class SearchPlaceByKeywordService {
     public SerchPlaceResDTO searchPlaceByKeyword(String query) {
         SerchPlaceResDTO result = new SerchPlaceResDTO();
 
-
         List<Place> kakaoPlaces = kaKaoApiService.callPlaceInfoApi(query);
         List<Place> naverPlaces = naverApiService.callPlaceInfoApi(query);
 

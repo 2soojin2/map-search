@@ -1,6 +1,6 @@
 package com.example.mapsearch.service;
 
-import com.example.mapsearch.constant.ApiConstants;
+import com.example.mapsearch.constant.Constant;
 import com.example.mapsearch.dto.KakaoApiResDTO;
 import com.example.mapsearch.dto.KakaoPlace;
 import com.example.mapsearch.dto.Place;
@@ -44,7 +44,7 @@ public class KaKaoApiServiceImpl implements CallExternalApiService{
                 .fromUriString("https://dapi.kakao.com")
                 .path("/v2/local/search/keyword.json")
                 .queryParam("query", param)
-                .queryParam("size", ApiConstants.requestCount)
+                .queryParam("size", Constant.REQUEST_COUNT)
                 .encode()
                 .build()
                 .toUri();

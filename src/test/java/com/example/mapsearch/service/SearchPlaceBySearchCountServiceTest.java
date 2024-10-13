@@ -1,7 +1,6 @@
 package com.example.mapsearch.service;
 
 import com.example.mapsearch.entity.PlaceEntity;
-import com.example.mapsearch.repository.PlaceRedisRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,10 +51,10 @@ class SearchPlaceBySearchCountServiceTest {
         makePlace("L곱창", 11);
     }
 
-    private void makePlace(String A곱창, int searchCount) {
-        PlaceEntity place1 = new PlaceEntity(A곱창, "127", "165", searchCount);
+    private void makePlace(String title, int searchCount) {
+        PlaceEntity place1 = new PlaceEntity(title, "127", "165", searchCount);
         PlaceEntity savedPlace = repository.save(place1);
-        service.savePlaceSearchCount(savedPlace.getId(), searchCount);
+        repository.savePlaceSearchCount(savedPlace.getId(), searchCount);
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.example.mapsearch.service;
 
-import com.example.mapsearch.constant.ApiConstants;
+import com.example.mapsearch.constant.Constant;
 import com.example.mapsearch.dto.NaverApiResDTO;
 import com.example.mapsearch.dto.NaverPlace;
 import com.example.mapsearch.dto.Place;
@@ -49,7 +49,7 @@ public class NaverApiServiceImpl implements CallExternalApiService{
                     .fromUriString("https://openapi.naver.com")
                     .path("/v1/search/local.json")
                     .queryParam("query", param)
-                    .queryParam("display", ApiConstants.requestCount)
+                    .queryParam("display", Constant.REQUEST_COUNT)
                     .encode()
                     .build()
                     .toUri();
