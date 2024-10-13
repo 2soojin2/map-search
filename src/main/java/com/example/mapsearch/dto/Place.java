@@ -9,6 +9,7 @@ public class Place {
     private String title;
     private String x;
     private String y;
+    private boolean isEnd;
 
     public Place(String title, String x, String y) {
         this.title = title;

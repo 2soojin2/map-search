@@ -1,6 +1,7 @@
 package com.example.mapsearch.service;
 
 import com.example.mapsearch.constant.Constant;
+import com.example.mapsearch.dto.ExternalApiResult;
 import com.example.mapsearch.dto.NaverApiResDTO;
 import com.example.mapsearch.dto.NaverPlace;
 import com.example.mapsearch.dto.Place;
@@ -16,6 +17,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.example.mapsearch.constant.Constant.REQUEST_COUNT;
 
 @Service
 public class NaverApiServiceImpl implements CallExternalApiService{
@@ -44,26 +47,28 @@ public class NaverApiServiceImpl implements CallExternalApiService{
     }
 
     @Override
-    public List<Place> callPlaceInfoApi(String param) {
-            URI uri = UriComponentsBuilder
-                    .fromUriString("https://openapi.naver.com")
-                    .path("/v1/search/local.json")
-                    .queryParam("query", param)
-                    .queryParam("display", Constant.REQUEST_COUNT)
-                    .encode()
-                    .build()
-                    .toUri();
+    public ExternalApiResult callPlaceInfoApi(String param, int page) {
+        ExternalApiResult result = new ExternalApiResult();
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://openapi.naver.com")
+                .path("/v1/search/local.json")
+                .queryParam("query", param)
+                .queryParam("display", REQUEST_COUNT)
+                .queryParam("start", page)
+                .encode()
+                .build()
+                .toUri();
 
-            HttpEntity<String> entity = new HttpEntity<>(this.getAuthHeader());
+        HttpEntity<String> entity = new HttpEntity<>(this.getAuthHeader());
 
-            List<Place> result = new ArrayList<>();
-            ResponseEntity<NaverApiResDTO> response = restTemplate.exchange(uri, HttpMethod.GET, entity, NaverApiResDTO.class);
-            System.out.println(response);
-            if(HttpStatusCode.valueOf(200).equals(response.getStatusCode())){
-                NaverApiResDTO body = response.getBody();
-                result = body.getItems().stream().map(this::toPlace).collect(Collectors.toList());
-            }
-            return result;
+        ResponseEntity<NaverApiResDTO> response = restTemplate.exchange(uri, HttpMethod.GET, entity, NaverApiResDTO.class);
+        if(HttpStatusCode.valueOf(200).equals(response.getStatusCode())){
+            NaverApiResDTO body = response.getBody();
+            List<Place> naverPlaces = body.getItems().stream().map(this::toPlace).collect(Collectors.toList());
+            result.setPlaceList(naverPlaces);
+            result.setEnd(REQUEST_COUNT >= body.getTotal());
+        }
+        return result;
     }
 
 

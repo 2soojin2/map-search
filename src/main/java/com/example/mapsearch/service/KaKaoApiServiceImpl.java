@@ -1,6 +1,7 @@
 package com.example.mapsearch.service;
 
 import com.example.mapsearch.constant.Constant;
+import com.example.mapsearch.dto.ExternalApiResult;
 import com.example.mapsearch.dto.KakaoApiResDTO;
 import com.example.mapsearch.dto.KakaoPlace;
 import com.example.mapsearch.dto.Place;
@@ -39,23 +40,26 @@ public class KaKaoApiServiceImpl implements CallExternalApiService{
     }
 
     @Override
-    public List<Place> callPlaceInfoApi(String param) {
+    public ExternalApiResult callPlaceInfoApi(String param, int page) {
+        ExternalApiResult result = new ExternalApiResult();
         URI uri = UriComponentsBuilder
                 .fromUriString("https://dapi.kakao.com")
                 .path("/v2/local/search/keyword.json")
                 .queryParam("query", param)
                 .queryParam("size", Constant.REQUEST_COUNT)
+                .queryParam("page", page)
                 .encode()
                 .build()
                 .toUri();
 
         HttpEntity<String> entity = new HttpEntity<>(this.getAuthHeader());
 
-        List<Place> result = new ArrayList<>();
         ResponseEntity<KakaoApiResDTO> response = restTemplate.exchange(uri, HttpMethod.GET, entity, KakaoApiResDTO.class);
         if(HttpStatusCode.valueOf(200).equals(response.getStatusCode())){
             KakaoApiResDTO body = response.getBody();
-            result = body.getDocuments().stream().map(this::toPlace).collect(Collectors.toList());
+            List<Place> kakaoPlaces = body.getDocuments().stream().map(this::toPlace).collect(Collectors.toList());
+            result.setPlaceList(kakaoPlaces);
+            result.setEnd(body.getMeta().isEnd());
         }else{
             log.error("카카오 연동 에러");
         }
