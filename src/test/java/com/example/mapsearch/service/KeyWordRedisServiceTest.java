@@ -40,16 +40,16 @@ class KeyWordRedisServiceTest {
         KeywordEntity keyword = new KeywordEntity(q);
         keyWordRedisService.saveOrUpdateKeyword(keyword);
         KeywordEntity byTitle = keyWordRedisService.findByTitle(keyword);
-        Assertions.assertEquals(0, byTitle.getSearchCount());
+        Assertions.assertEquals(1, byTitle.getSearchCount());
         Double placeSearchCount = keyWordRedisService.getKeyWordSearchCount(byTitle.getId());
-        Assertions.assertEquals(0, placeSearchCount);
+        Assertions.assertEquals(1, placeSearchCount);
 
         // 한번 더 저장
         keyWordRedisService.saveOrUpdateKeyword(keyword);
         KeywordEntity byTitle2 = keyWordRedisService.findByTitle(keyword);
-        Assertions.assertEquals(1, byTitle.getSearchCount());
+        Assertions.assertEquals(2, byTitle2.getSearchCount());
         Double placeSearchCount2 = keyWordRedisService.getKeyWordSearchCount(byTitle2.getId());
-        Assertions.assertEquals(1, placeSearchCount2);
+        Assertions.assertEquals(2, placeSearchCount2);
     }
 
     @Test

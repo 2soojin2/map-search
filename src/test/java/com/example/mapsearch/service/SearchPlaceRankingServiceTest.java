@@ -67,7 +67,7 @@ class SearchPlaceRankingServiceTest {
 
     @Test
     void 상위_10개의_검색어_가져옴() {
-        initKeywordData();
+        initPlaceData();
         List<PlaceEntity> placeSearchCount = searchPlaceRankingService.getPlaceRanking();
         Assertions.assertEquals(10, placeSearchCount.size());
         Assertions.assertEquals(11, placeSearchCount.get(0).getSearchCount());
