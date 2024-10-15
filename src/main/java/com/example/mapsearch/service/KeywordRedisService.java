@@ -47,7 +47,6 @@ public class KeywordRedisService {
         zSetOperations.add(Constant.KEYWORD_SEARCH_COUNT, keyword, searchCount);
     }
 
-    // TODO keywordId 에서 keyword로 변경
     public void incrementKeywordSearchCount(String keyword) {
         zSetOperations.incrementScore(Constant.KEYWORD_SEARCH_COUNT, keyword, 1.0);
     }
