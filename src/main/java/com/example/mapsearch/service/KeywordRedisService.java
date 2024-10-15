@@ -20,48 +20,39 @@ public class KeywordRedisService {
     private final HashOperations<String, String, KeywordEntity> keywordHashOperations;
 
     public KeywordEntity saveKeyword(KeywordEntity keywordEntity) {
-        keywordHashOperations.put(Constant.REDIS_HASH_KEY_KEWORDS, keywordEntity.getId(), keywordEntity);
+        keywordHashOperations.put(Constant.REDIS_HASH_KEY_KEWORDS, keywordEntity.getTitle(), keywordEntity);
         return keywordEntity;
     }
 
     public void saveOrUpdateKeyword(KeywordEntity keywordEntity) {
-        KeywordEntity existingKeyword = this.findByTitle(keywordEntity);
+        KeywordEntity existingKeyword = this.findByTitle(keywordEntity.getTitle());
         KeywordEntity savedKeyword = new KeywordEntity();
         if (ObjectUtils.isEmpty(existingKeyword)) {
-            this.saveKeywordSearchCount(keywordEntity.getId(), keywordEntity.getSearchCount());
+            this.saveKeywordSearchCount(keywordEntity.getTitle(), keywordEntity.getSearchCount());
             savedKeyword = keywordEntity;
         } else {
             existingKeyword.plusOneSearchCount();
-            this.incrementKeywordSearchCount(existingKeyword.getId());
+            this.incrementKeywordSearchCount(existingKeyword.getTitle());
             savedKeyword = existingKeyword;
         }
         this.saveKeyword(savedKeyword);
     }
 
-    public KeywordEntity findByTitle(KeywordEntity keywordEntity) {
-        Map<String, KeywordEntity> keywordEntities = keywordHashOperations.entries(Constant.REDIS_HASH_KEY_KEWORDS);
-        for (KeywordEntity keyword : keywordEntities.values()) {
-            if (keyword.equals(keywordEntity)) {
-                return keyword;
-            }
-        }
-        return null;
+    public KeywordEntity findByTitle(String keyword) {
+//        KEYWORD_SEARCH_COUNT
+        return keywordHashOperations.get(Constant.REDIS_HASH_KEY_KEWORDS, keyword);
     }
 
-    public KeywordEntity findById(String keywordId) {
-        return keywordHashOperations.get(Constant.REDIS_HASH_KEY_KEWORDS, keywordId);
-    }
-
-    public void saveKeywordSearchCount(String keywordId, double searchCount) {
-        zSetOperations.add(Constant.KEYWORD_SEARCH_COUNT, keywordId, searchCount);
+    public void saveKeywordSearchCount(String keyword, double searchCount) {
+        zSetOperations.add(Constant.KEYWORD_SEARCH_COUNT, keyword, searchCount);
     }
 
     // TODO keywordId 에서 keyword로 변경
-    public void incrementKeywordSearchCount(String keywordId) {
-        zSetOperations.incrementScore(Constant.KEYWORD_SEARCH_COUNT, keywordId, 1.0);
+    public void incrementKeywordSearchCount(String keyword) {
+        zSetOperations.incrementScore(Constant.KEYWORD_SEARCH_COUNT, keyword, 1.0);
     }
 
-    public Double getKeyWordSearchCount(String keywordId) {
-        return zSetOperations.score(Constant.KEYWORD_SEARCH_COUNT, keywordId);
+    public Double getKeyWordSearchCount(String keyword) {
+        return zSetOperations.score(Constant.KEYWORD_SEARCH_COUNT, keyword);
     }
 }

@@ -40,8 +40,8 @@ public class SearchPlaceRankingService {
         List<KeywordRankResDTO> result = new ArrayList<>();
         Set<ZSetOperations.TypedTuple<Object>> keywordTuples = zSetOperations.reverseRangeWithScores(Constant.KEYWORD_SEARCH_COUNT, START, END);
         for (ZSetOperations.TypedTuple<Object> stringTypedTuple : keywordTuples) {
-            String keywordId = stringTypedTuple.getValue().toString();
-            KeywordEntity keyword = keywordRedisService.findById(keywordId);
+            String title = stringTypedTuple.getValue().toString();
+            KeywordEntity keyword = keywordRedisService.findByTitle(title);
             KeywordRankResDTO keywordRankResDTO = new KeywordRankResDTO(keyword.getTitle(), keyword.getSearchCount());
             result.add(keywordRankResDTO);
         }
