@@ -5,6 +5,7 @@ import com.example.mapsearch.dto.SerchPlaceResDTO;
 import com.example.mapsearch.service.SearchPlaceByKeywordService;
 import com.example.mapsearch.service.SearchPlaceRankingService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,12 +22,14 @@ public class SearchPlaceController {
     private final SearchPlaceRankingService searchPlaceBySearchCountService;
 
     @GetMapping(value = "/place")
-    public SerchPlaceResDTO searchPlaceByKeyword(@RequestParam String param){
-        return searchPlaceByKeywordService.searchPlaceByKeyword(param);
+    public ResponseEntity<SerchPlaceResDTO> searchPlaceByKeyword(@RequestParam String param){
+        SerchPlaceResDTO serchPlaceResDTO = searchPlaceByKeywordService.searchPlaceByKeyword(param);
+        return ResponseEntity.ok(serchPlaceResDTO);
     }
 
     @GetMapping(value = "/ranking")
-    public List<KeywordRankResDTO> searchKeywordRanking(){
-        return searchPlaceBySearchCountService.getKeywordRanking();
+    public ResponseEntity<List<KeywordRankResDTO>> searchKeywordRanking(){
+        List<KeywordRankResDTO> keywordRanking = searchPlaceBySearchCountService.getKeywordRanking();
+        return ResponseEntity.ok(keywordRanking);
     }
 }
