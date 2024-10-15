@@ -1,6 +1,6 @@
 package com.example.mapsearch.service;
 
-import com.example.mapsearch.dto.Place;
+import com.example.mapsearch.domain.Place;
 import com.example.mapsearch.dto.SerchPlaceResDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

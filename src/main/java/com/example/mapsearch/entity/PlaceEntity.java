@@ -1,6 +1,5 @@
 package com.example.mapsearch.entity;
 
-import com.example.mapsearch.dto.Place;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

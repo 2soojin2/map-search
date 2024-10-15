@@ -1,7 +1,7 @@
 package com.example.mapsearch.service;
 
 import com.example.mapsearch.dto.ExternalApiResult;
-import com.example.mapsearch.dto.Place;
+import com.example.mapsearch.domain.Place;
 import com.example.mapsearch.dto.PlaceResDTO;
 import com.example.mapsearch.dto.SerchPlaceResDTO;
 import com.example.mapsearch.entity.KeywordEntity;

@@ -1,17 +1,13 @@
 package com.example.mapsearch.service;
 
 import com.example.mapsearch.dto.ExternalApiResult;
-import com.example.mapsearch.dto.KakaoPlace;
-import com.example.mapsearch.dto.NaverPlace;
-import com.example.mapsearch.dto.Place;
+import com.example.mapsearch.domain.Place;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class CallExternalApiServiceTest {

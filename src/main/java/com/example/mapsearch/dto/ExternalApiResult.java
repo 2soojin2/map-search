@@ -1,5 +1,6 @@
 package com.example.mapsearch.dto;
 
+import com.example.mapsearch.domain.Place;
 import lombok.Data;
 
 import java.util.List;

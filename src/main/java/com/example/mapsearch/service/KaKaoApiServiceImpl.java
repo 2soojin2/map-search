@@ -3,8 +3,8 @@ package com.example.mapsearch.service;
 import com.example.mapsearch.constant.Constant;
 import com.example.mapsearch.dto.ExternalApiResult;
 import com.example.mapsearch.dto.KakaoApiResDTO;
-import com.example.mapsearch.dto.KakaoPlace;
-import com.example.mapsearch.dto.Place;
+import com.example.mapsearch.dto.KakaoPlaceDTO;
+import com.example.mapsearch.domain.Place;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -15,7 +15,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,7 +65,7 @@ public class KaKaoApiServiceImpl implements CallExternalApiService{
         return result;
     }
 
-    private Place toPlace(KakaoPlace kakaoPlace){
+    private Place toPlace(KakaoPlaceDTO kakaoPlace){
 
         DecimalFormat df = new DecimalFormat("#.####");
         String formattedX = df.format(kakaoPlace.getX()); // .을 없애고 소수 세자리 까지만

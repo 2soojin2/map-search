@@ -1,4 +1,4 @@
-package com.example.mapsearch.dto;
+package com.example.mapsearch.domain;
 
 import lombok.Getter;
 

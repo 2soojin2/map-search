@@ -1,10 +1,9 @@
 package com.example.mapsearch.service;
 
-import com.example.mapsearch.constant.Constant;
 import com.example.mapsearch.dto.ExternalApiResult;
 import com.example.mapsearch.dto.NaverApiResDTO;
-import com.example.mapsearch.dto.NaverPlace;
-import com.example.mapsearch.dto.Place;
+import com.example.mapsearch.dto.NaverPlaceDTO;
+import com.example.mapsearch.domain.Place;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
@@ -14,7 +13,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,7 +70,7 @@ public class NaverApiServiceImpl implements CallExternalApiService{
     }
 
 
-    private Place toPlace(NaverPlace naverPlace){
+    private Place toPlace(NaverPlaceDTO naverPlace){
         String title = naverPlace.getTitle().replaceAll("<[^>]+>", "");;
         DecimalFormat df = new DecimalFormat("#.####");
 

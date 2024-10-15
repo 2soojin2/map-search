@@ -45,11 +45,6 @@ class PlaceRedisServiceTest {
     }
 
     @Test
-    void 업데이트시_동시성_이슈_테스트(){
-        // 스레드 여러개로 확인
-    }
-
-    @Test
     void 좌표값이_같으면_장소_엔티티_반환(){
         PlaceEntity place1 = new PlaceEntity("ABC곱창", "127456", "165123", 0);
         PlaceEntity savePlace1 = placeRedisService.savePlace(place1);

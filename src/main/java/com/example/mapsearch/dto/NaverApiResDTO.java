@@ -6,6 +6,6 @@ import java.util.List;
 
 @Getter
 public class NaverApiResDTO {
-    private List<NaverPlace> items;
+    private List<NaverPlaceDTO> items;
     private int total;
 }
