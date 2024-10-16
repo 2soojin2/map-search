@@ -23,10 +23,10 @@ class SearchLocationServiceTest {
     @MockBean
     private NaverApiServiceImpl naverApiService;
 
-    private List<Place> makeFakePlaceData(String query,int startX, int startY, int count) {
+    private List<Place> makeFakePlaceData(String placeName,int startX, int startY, int count) {
         List<Place> placeList = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            Place place1 = new Place(query+(char)(i+65), String.valueOf(startX+i), String.valueOf(startY+i));
+            Place place1 = new Place(placeName+(char)(i+65), String.valueOf(startX+i), String.valueOf(startY+i));
             placeList.add(place1);
         }
         return placeList;
@@ -46,9 +46,9 @@ class SearchLocationServiceTest {
     void 정상적으로_결과가_조회됨(){
         int page = 1;
         String query = "곱창";
-        List<Place> kakaoMockData = makeFakePlaceData(query, 123, 456, 5);
+        List<Place> kakaoMockData = makeFakePlaceData("카카오곱창", 123, 456, 5);
         when(kakaoApiService.callPlaceInfoApi(query, page)).thenReturn(new ExternalApiResultDTO(kakaoMockData, true));
-        List<Place> naverMockData = makeFakePlaceData(query, 456, 789, 5);
+        List<Place> naverMockData = makeFakePlaceData("네이버곱창", 456, 789, 5);
         when(naverApiService.callPlaceInfoApi(query, page)).thenReturn(new ExternalApiResultDTO(naverMockData, true));
 
         SerchPlaceResDTO serchLocationRes = searchPlaceService.searchPlaceByKeyword(query);
@@ -62,13 +62,13 @@ class SearchLocationServiceTest {
         int page = 1;
         String query = "곱창";
         // 카카오 5개 미만 목
-        List<Place> kakaoMockData = makeFakePlaceData(query, 123, 456, 4);
+        List<Place> kakaoMockData = makeFakePlaceData("카카오곱창", 123, 456, 4);
         when(kakaoApiService.callPlaceInfoApi(query, page)).thenReturn(new ExternalApiResultDTO(kakaoMockData, true));
         // 네이버 5개 이상 목
-        List<Place> naverMockData = makeFakePlaceData(query, 456, 789, 5);
+        List<Place> naverMockData = makeFakePlaceData("네이버곱창", 456, 789, 5);
         when(naverApiService.callPlaceInfoApi(query, page)).thenReturn(new ExternalApiResultDTO(naverMockData, false));
         // 네이버 다음 페이지 목
-        List<Place> naverMockDataNextPage = makeFakePlaceData(query, 101, 213, 5);
+        List<Place> naverMockDataNextPage = makeFakePlaceData("네이버곱창다음", 101, 213, 5);
         when(naverApiService.callPlaceInfoApi(query, page+1)).thenReturn(new ExternalApiResultDTO(naverMockDataNextPage, true));
 
         SerchPlaceResDTO serchLocationRes = searchPlaceService.searchPlaceByKeyword(query);
@@ -80,14 +80,14 @@ class SearchLocationServiceTest {
         int page = 1;
         String query = "곱창";
         // 카카오 5개 이상 목
-        List<Place> kakoMockData = makeFakePlaceData(query, 456, 789, 5);
+        List<Place> kakoMockData = makeFakePlaceData("카카오곱창", 456, 789, 5);
         when(kakaoApiService.callPlaceInfoApi(query, page)).thenReturn(new ExternalApiResultDTO(kakoMockData, false));
         // 네이버 다음 페이지 목
-        List<Place> kakaoMockDataNextPage = makeFakePlaceData(query, 101, 213, 5);
+        List<Place> kakaoMockDataNextPage = makeFakePlaceData("카카오곱창다음", 101, 213, 5);
         when(kakaoApiService.callPlaceInfoApi(query, page+1)).thenReturn(new ExternalApiResultDTO(kakaoMockDataNextPage, true));
 
         // 네이버 5개 미만 목
-        List<Place> naverMockData = makeFakePlaceData(query, 123, 456, 4);
+        List<Place> naverMockData = makeFakePlaceData("네이버곱창", 123, 456, 4);
         when(naverApiService.callPlaceInfoApi(query, page)).thenReturn(new ExternalApiResultDTO(naverMockData, true));
 
         SerchPlaceResDTO serchLocationRes = searchPlaceService.searchPlaceByKeyword(query);
@@ -98,10 +98,11 @@ class SearchLocationServiceTest {
     void 둘다_5개_미만의_결과(){
         int page = 1;
         String query = "곱창";
-        List<Place> kakaoMockData = makeFakePlaceData(query, 123, 456, 3);
+        List<Place> kakaoMockData = makeFakePlaceData("카카오곱창", 123, 456, 3);
         when(kakaoApiService.callPlaceInfoApi(query, page)).thenReturn(new ExternalApiResultDTO(kakaoMockData, true));
-        List<Place> naverMockData = makeFakePlaceData(query, 456, 789, 3);
+        List<Place> naverMockData = makeFakePlaceData("네이버곱창", 456, 789, 3);
         when(naverApiService.callPlaceInfoApi(query, page)).thenReturn(new ExternalApiResultDTO(naverMockData, true));
+
         SerchPlaceResDTO serchLocationRes = searchPlaceService.searchPlaceByKeyword(query);
         assertEquals(6, serchLocationRes.getPlaces().size());
     }
@@ -110,9 +111,9 @@ class SearchLocationServiceTest {
     void 이름이_같은_경우_같은_장소로_판별(){
         int page = 1;
         String query = "곱창";
-        List<Place> kakaoMockData = makeFakePlaceData(query, 123, 456, 1);
+        List<Place> kakaoMockData = makeFakePlaceData("마싯는곱창", 123, 456, 1);
         when(kakaoApiService.callPlaceInfoApi(query, page)).thenReturn(new ExternalApiResultDTO(kakaoMockData, true));
-        List<Place> naverMockData = makeFakePlaceData(query, 456, 789, 1);
+        List<Place> naverMockData = makeFakePlaceData("마싯는곱창", 456, 789, 1);
         when(naverApiService.callPlaceInfoApi(query, page)).thenReturn(new ExternalApiResultDTO(naverMockData, true));
 
         SerchPlaceResDTO serchLocationRes = searchPlaceService.searchPlaceByKeyword(query);

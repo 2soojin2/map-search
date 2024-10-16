@@ -1,5 +1,6 @@
 package com.example.mapsearch.service;
 
+import com.example.mapsearch.dto.KeywordRankResDTO;
 import com.example.mapsearch.entity.KeywordEntity;
 import com.example.mapsearch.facade.RedissonLockKeywordFacade;
 import org.junit.jupiter.api.Assertions;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,17 +42,29 @@ class KeyWordRedisServiceTest {
         String q = "곱창";
         KeywordEntity keyword = new KeywordEntity(q);
         keyWordRedisService.saveOrUpdateKeyword(keyword);
-        KeywordEntity byTitle = keyWordRedisService.findByTitle(keyword.getTitle());
-        Assertions.assertEquals(1, byTitle.getSearchCount());
-        Double placeSearchCount = keyWordRedisService.getKeyWordSearchCount(byTitle.getTitle());
+        Double placeSearchCount = keyWordRedisService.getKeyWordSearchCount(keyword.getTitle());
         Assertions.assertEquals(1, placeSearchCount);
 
         // 한번 더 저장
         keyWordRedisService.saveOrUpdateKeyword(keyword);
-        KeywordEntity byTitle2 = keyWordRedisService.findByTitle(keyword.getTitle());
-        Assertions.assertEquals(2, byTitle2.getSearchCount());
-        Double placeSearchCount2 = keyWordRedisService.getKeyWordSearchCount(byTitle2.getTitle());
+        Double placeSearchCount2 = keyWordRedisService.getKeyWordSearchCount(keyword.getTitle());
         Assertions.assertEquals(2, placeSearchCount2);
+    }
+
+    @Test
+    void 검색량이_많은_순서대로_조회됨(){
+        List<String> keywordList = Arrays.asList("A곱창", "B곱창", "C곱창", "D곱창", "E곱창");
+        for (int i = 0; i < keywordList.size(); i++) {
+            KeywordEntity keyword = new KeywordEntity(keywordList.get(i), i+1);
+            keyWordRedisService.saveOrUpdateKeyword(keyword);
+            for (int j = 0; j < i+1; j++) {
+                keyWordRedisService.saveOrUpdateKeyword(keyword);
+            }
+        }
+
+        List<KeywordRankResDTO> keywordRanking = keyWordRedisService.getKeywordRanking();
+        Assertions.assertEquals("E곱창", keywordRanking.get(0).getKeyword());
+        Assertions.assertEquals("A곱창", keywordRanking.get(4).getKeyword());
     }
 
     @Test

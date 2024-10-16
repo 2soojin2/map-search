@@ -1,6 +1,7 @@
 package com.example.mapsearch.service;
 
 import com.example.mapsearch.constant.Constant;
+import com.example.mapsearch.dto.KeywordRankResDTO;
 import com.example.mapsearch.entity.KeywordEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
@@ -9,7 +10,9 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -53,5 +56,17 @@ public class KeywordRedisService {
 
     public Double getKeyWordSearchCount(String keyword) {
         return zSetOperations.score(Constant.KEYWORD_SEARCH_COUNT, keyword);
+    }
+
+    public List<KeywordRankResDTO> getKeywordRanking(){
+        List<KeywordRankResDTO> result = new ArrayList<>();
+        Set<ZSetOperations.TypedTuple<Object>> keywordTuples = zSetOperations.reverseRangeWithScores(Constant.KEYWORD_SEARCH_COUNT, Constant.SEARCH_START, Constant.SEARCH_END);
+        for (ZSetOperations.TypedTuple<Object> stringTypedTuple : keywordTuples) {
+            String keyword = stringTypedTuple.getValue().toString();
+            Double searchCount = stringTypedTuple.getScore();
+            KeywordRankResDTO keywordRankResDTO = new KeywordRankResDTO(keyword, searchCount);
+            result.add(keywordRankResDTO);
+        }
+        return result;
     }
 }

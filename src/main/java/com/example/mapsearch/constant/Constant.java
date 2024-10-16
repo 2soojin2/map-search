@@ -11,4 +11,6 @@ public class Constant {
     public static final String PLACE_SEARCH_COUNT = "place_search_count";
     public static final String KEYWORD_SEARCH_COUNT = "keyword_search_count";
 
+    public static final int SEARCH_START = 0;
+    public static final int SEARCH_END = 9;
 }

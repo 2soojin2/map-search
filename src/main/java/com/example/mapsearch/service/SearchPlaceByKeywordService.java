@@ -65,7 +65,6 @@ public class SearchPlaceByKeywordService {
         List<Place> kakaoOnly = kakaoPlaces.stream().distinct().filter(o->!both.contains(o)).collect(Collectors.toList());
         List<Place> naverOnly = naverPlaces.stream().distinct().filter(o->!both.contains(o)).collect(Collectors.toList());
 
-
         List<Place> finalResult = new ArrayList<>();
         finalResult.addAll(both);
         finalResult.addAll(kakaoOnly);
