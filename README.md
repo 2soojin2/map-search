@@ -211,11 +211,11 @@ private String normalize(String input) {
 - 단위 테스트
   - 주요 서비스에 대해 테스트 코드 작성
     - `CallExternalApiServiceTest` : 이 경우는 특별히 연동을 확인하기 위해 작성함
-    ![img_1.png](src/main/resources/image/img_1.png)
-    - `KeyWordRedisServiceTest`
-    ![img.png](src/main/resources/image/img_2.png)
-    - `SearchLocationServiceTest` 
-    ![img_1.png](src/main/resources/image/img_3.png)
+      ![img_1.png](src/main/resources/image/img_1.png)
+      - `KeyWordRedisServiceTest`
+      ![img.png](src/main/resources/image/img_2.png)
+      - `SearchLocationServiceTest` 
+      ![img_1.png](src/main/resources/image/img_3.png)
 - 테스트 시나리오
   - postman을 활용해 통합 테스트 진행함
   - 장소 검색 API 호출 -> 검색 키워드 목록 API에서 검색 횟수 만큼 표시되는 지 확인 
