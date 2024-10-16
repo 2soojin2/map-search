@@ -1,0 +1,84 @@
+{
+  "documents": [
+    {
+      "address_name": "서울 마포구 상암동 1605",
+      "category_group_code": "BK9",
+      "category_group_name": "은행",
+      "category_name": "금융,보험 \u003e 금융서비스 \u003e 은행 \u003e 우리은행",
+      "distance": "",
+      "id": "14920153",
+      "phone": "02-374-9911",
+      "place_name": "우리은행 상암DMC금융센터",
+      "place_url": "http://place.map.kakao.com/14920153",
+      "road_address_name": "서울 마포구 월드컵북로 396",
+      "x": "126.88978250184262",
+      "y": "37.57942825175973"
+    },
+    {
+      "address_name": "서울 은평구 수색동 75",
+      "category_group_code": "BK9",
+      "category_group_name": "은행",
+      "category_name": "금융,보험 \u003e 금융서비스 \u003e 은행 \u003e ATM",
+      "distance": "",
+      "id": "490526753",
+      "phone": "",
+      "place_name": "우리은행 365코너 상암DMC금융센터(점외)",
+      "place_url": "http://place.map.kakao.com/490526753",
+      "road_address_name": "서울 은평구 수색로 217",
+      "x": "126.898518198314",
+      "y": "37.5799352353084"
+    },
+    {
+      "address_name": "서울 마포구 상암동 1623",
+      "category_group_code": "BK9",
+      "category_group_name": "은행",
+      "category_name": "금융,보험 \u003e 금융서비스 \u003e 은행 \u003e ATM",
+      "distance": "",
+      "id": "725247213",
+      "phone": "",
+      "place_name": "우리은행 365코너 상암DMC금융센터(점외)",
+      "place_url": "http://place.map.kakao.com/725247213",
+      "road_address_name": "서울 마포구 성암로 179",
+      "x": "126.898749708827",
+      "y": "37.576176487881"
+    },
+    {
+      "address_name": "서울 마포구 상암동 1605",
+      "category_group_code": "BK9",
+      "category_group_name": "은행",
+      "category_name": "금융,보험 \u003e 금융서비스 \u003e 은행 \u003e ATM",
+      "distance": "",
+      "id": "1591982212",
+      "phone": "",
+      "place_name": "우리은행 365코너 상암DMC금융센터",
+      "place_url": "http://place.map.kakao.com/1591982212",
+      "road_address_name": "서울 마포구 월드컵북로 396",
+      "x": "126.889782501842",
+      "y": "37.5794282517657"
+    },
+    {
+      "address_name": "서울 마포구 상암동 1605",
+      "category_group_code": "BK9",
+      "category_group_name": "은행",
+      "category_name": "금융,보험 \u003e 금융서비스 \u003e 은행 \u003e ATM",
+      "distance": "",
+      "id": "1592122788",
+      "phone": "",
+      "place_name": "우리은행 365코너 상암DMC금융센터",
+      "place_url": "http://place.map.kakao.com/1592122788",
+      "road_address_name": "서울 마포구 월드컵북로 396",
+      "x": "126.889782501842",
+      "y": "37.5794282517657"
+    }
+  ],
+  "meta": {
+    "is_end": true,
+    "pageable_count": 5,
+    "same_name": {
+      "keyword": "우리은행 상암DMC금융센터",
+      "region": [],
+      "selected_region": ""
+    },
+    "total_count": 5
+  }
+}

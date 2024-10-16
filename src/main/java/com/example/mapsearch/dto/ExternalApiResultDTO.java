@@ -6,7 +6,12 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ExternalApiResult {
+public class ExternalApiResultDTO {
     private List<Place> placeList;
     private boolean isEnd;
+
+    public ExternalApiResultDTO(List<Place> placeList, boolean isEnd) {
+        this.placeList = placeList;
+        this.isEnd = isEnd;
+    }
 }

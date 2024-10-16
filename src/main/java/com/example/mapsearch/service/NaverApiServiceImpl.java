@@ -1,9 +1,10 @@
 package com.example.mapsearch.service;
 
-import com.example.mapsearch.dto.ExternalApiResult;
+import com.example.mapsearch.domain.Place;
+import com.example.mapsearch.dto.ExternalApiResultDTO;
 import com.example.mapsearch.dto.NaverApiResDTO;
 import com.example.mapsearch.dto.NaverPlaceDTO;
-import com.example.mapsearch.domain.Place;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.mapsearch.constant.Constant.REQUEST_COUNT;
-
+@Slf4j
 @Service
 public class NaverApiServiceImpl implements CallExternalApiService{
 
@@ -45,8 +46,7 @@ public class NaverApiServiceImpl implements CallExternalApiService{
     }
 
     @Override
-    public ExternalApiResult callPlaceInfoApi(String param, int page) {
-        ExternalApiResult result = new ExternalApiResult();
+    public ExternalApiResultDTO callPlaceInfoApi(String param, int page) {
         URI uri = UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com")
                 .path("/v1/search/local.json")
@@ -57,14 +57,17 @@ public class NaverApiServiceImpl implements CallExternalApiService{
                 .build()
                 .toUri();
 
-        HttpEntity<String> entity = new HttpEntity<>(this.getAuthHeader());
+        ExternalApiResultDTO result = null;
 
+        HttpEntity<String> entity = new HttpEntity<>(this.getAuthHeader());
         ResponseEntity<NaverApiResDTO> response = restTemplate.exchange(uri, HttpMethod.GET, entity, NaverApiResDTO.class);
+
         if(HttpStatusCode.valueOf(200).equals(response.getStatusCode())){
             NaverApiResDTO body = response.getBody();
             List<Place> naverPlaces = body.getItems().stream().map(this::toPlace).collect(Collectors.toList());
-            result.setPlaceList(naverPlaces);
-            result.setEnd(REQUEST_COUNT >= body.getTotal());
+            result = new ExternalApiResultDTO(naverPlaces, REQUEST_COUNT >= body.getTotal());
+        }else{
+            log.error("네이버 연동 에러");
         }
         return result;
     }

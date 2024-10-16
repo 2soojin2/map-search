@@ -3,6 +3,7 @@ package com.example.mapsearch.constant;
 public class Constant {
     // API config
     public static final int REQUEST_COUNT = 5;
+    public static final int MAX_REQUEST_COUNT = 10;
 
     // Redis Hash Key
     public static final String REDIS_HASH_KEY_PLACES = "places";

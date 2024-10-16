@@ -1,10 +1,10 @@
 package com.example.mapsearch.service;
 
 import com.example.mapsearch.constant.Constant;
-import com.example.mapsearch.dto.ExternalApiResult;
+import com.example.mapsearch.domain.Place;
+import com.example.mapsearch.dto.ExternalApiResultDTO;
 import com.example.mapsearch.dto.KakaoApiResDTO;
 import com.example.mapsearch.dto.KakaoPlaceDTO;
-import com.example.mapsearch.domain.Place;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -39,8 +39,8 @@ public class KaKaoApiServiceImpl implements CallExternalApiService{
     }
 
     @Override
-    public ExternalApiResult callPlaceInfoApi(String param, int page) {
-        ExternalApiResult result = new ExternalApiResult();
+    public ExternalApiResultDTO callPlaceInfoApi(String param, int page) {
+
         URI uri = UriComponentsBuilder
                 .fromUriString("https://dapi.kakao.com")
                 .path("/v2/local/search/keyword.json")
@@ -51,14 +51,14 @@ public class KaKaoApiServiceImpl implements CallExternalApiService{
                 .build()
                 .toUri();
 
-        HttpEntity<String> entity = new HttpEntity<>(this.getAuthHeader());
+        ExternalApiResultDTO result = null;
 
+        HttpEntity<String> entity = new HttpEntity<>(this.getAuthHeader());
         ResponseEntity<KakaoApiResDTO> response = restTemplate.exchange(uri, HttpMethod.GET, entity, KakaoApiResDTO.class);
         if(HttpStatusCode.valueOf(200).equals(response.getStatusCode())){
             KakaoApiResDTO body = response.getBody();
             List<Place> kakaoPlaces = body.getDocuments().stream().map(this::toPlace).collect(Collectors.toList());
-            result.setPlaceList(kakaoPlaces);
-            result.setEnd(body.getMeta().isEnd());
+            result = new ExternalApiResultDTO(kakaoPlaces, body.getMeta().isEnd());
         }else{
             log.error("카카오 연동 에러");
         }

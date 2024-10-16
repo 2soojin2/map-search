@@ -1,0 +1,30 @@
+{
+	"lastBuildDate":"Tue, 15 Oct 2024 22:26:27 +0900",
+	"total":5,
+	"start":1,
+	"display":5,
+	"items":[
+		{
+			"title":"<b>우리은행 상암DMC금융센터<\/b>",
+			"link":"",
+			"category":"금융,보험>은행",
+			"description":"",
+			"telephone":"",
+			"address":"서울특별시 마포구 상암동 1605",
+			"roadAddress":"서울특별시 마포구 월드컵북로 396 누리꿈스퀘어",
+			"mapx":"1268894442",
+			"mapy":"375795313"
+		},
+		{
+			"title":"우리<b>금융<\/b> <b>상암<\/b><b>센터<\/b>",
+			"link":"",
+			"category":"서비스,산업>기업",
+			"description":"",
+			"telephone":"",
+			"address":"서울특별시 마포구 상암동 1585",
+			"roadAddress":"서울특별시 마포구 월드컵북로60길 17 우리금융상암센터",
+			"mapx":"1268860900",
+			"mapy":"375834449"
+		}
+	]
+}
