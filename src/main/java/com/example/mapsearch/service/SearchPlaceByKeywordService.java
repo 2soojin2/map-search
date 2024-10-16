@@ -5,6 +5,7 @@ import com.example.mapsearch.domain.Place;
 import com.example.mapsearch.dto.PlaceResDTO;
 import com.example.mapsearch.dto.SerchPlaceResDTO;
 import com.example.mapsearch.entity.KeywordEntity;
+import com.example.mapsearch.facade.RedissonLockKeywordFacade;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class SearchPlaceByKeywordService {
     private final KaKaoApiServiceImpl kakaoApiService;
     private final NaverApiServiceImpl naverApiService;
     private final KeywordRedisService keywordRedisService;
+    private final RedissonLockKeywordFacade redissonLockKeywordFacade;
 
     public SerchPlaceResDTO searchPlaceByKeyword(String query) {
         SerchPlaceResDTO result = new SerchPlaceResDTO();
@@ -56,7 +58,7 @@ public class SearchPlaceByKeywordService {
                 .collect(Collectors.toList()));
 
         KeywordEntity keywordEntity = new KeywordEntity(query);
-        keywordRedisService.saveOrUpdateKeyword(keywordEntity);
+        redissonLockKeywordFacade.saveOrUpdateKeyword(keywordEntity);
         return result;
     }
 
